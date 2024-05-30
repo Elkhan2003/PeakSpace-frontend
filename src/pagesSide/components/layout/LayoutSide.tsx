@@ -1,11 +1,11 @@
-import scss from './LayoutPage.module.scss';
+import scss from './LayoutSide.module.scss';
 import { Routes, Route } from 'react-router-dom';
-import Header from './header/Header';
-import Footer from './footer/Footer';
-import HomePage from '../pages/HomePage';
-import DashboardPage from '../pages/DashboardPage';
+import Header from './header/Header.tsx';
+import Footer from './footer/Footer.tsx';
+import HomePage from '../pages/HomePage.tsx';
+import DashboardPage from '../pages/DashboardPage.tsx';
 
-const LayoutPage = () => {
+const LayoutSide = () => {
 	return (
 		<>
 			<div className={scss.layout}>
@@ -21,4 +21,4 @@ const LayoutPage = () => {
 		</>
 	);
 };
-export default LayoutPage;
+export default LayoutSide;

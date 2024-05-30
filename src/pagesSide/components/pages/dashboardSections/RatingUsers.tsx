@@ -1,4 +1,4 @@
-import { useGetRatingQuery } from '../../../redux/api/rating';
+import { useGetRatingQuery } from '../../../../redux/api/rating';
 import scss from './RatingUsers.module.scss';
 
 const RatingUsers = () => {

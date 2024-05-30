@@ -1,4 +1,4 @@
-import RatingUsers from './dashboardSections/RatingUsers';
+import RatingUsers from './dashboardSections/RatingUsers.tsx';
 
 const DashboardPage = () => {
 	return (

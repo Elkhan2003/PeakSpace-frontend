@@ -11,18 +11,24 @@
 	border-radius: 10px;
 }
 * {
-	box-sizing: border-box;
 	margin: 0;
-}
-ul,
-ol {
 	padding: 0;
+	box-sizing: border-box;
 }
 li {
 	list-style: none;
 }
 a {
 	text-decoration: none;
+}
+button {
+	background: transparent;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	@media (max-width: 500px) {
+		cursor: default;
+	}
 }
 html {
 	color-scheme: dark;
