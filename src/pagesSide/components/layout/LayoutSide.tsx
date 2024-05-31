@@ -1,9 +1,7 @@
 import scss from './LayoutSide.module.scss';
-import { Routes, Route } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Header from './header/Header.tsx';
 import Footer from './footer/Footer.tsx';
-import HomePage from '../pages/HomePage.tsx';
-import DashboardPage from '../pages/DashboardPage.tsx';
 
 const LayoutSide = () => {
 	return (
@@ -11,10 +9,7 @@ const LayoutSide = () => {
 			<div className={scss.layout}>
 				<Header />
 				<main>
-					<Routes>
-						<Route path="/" element={<HomePage />} />
-						<Route path="/dashboard" element={<DashboardPage />} />
-					</Routes>
+					<Outlet />
 				</main>
 				<Footer />
 			</div>

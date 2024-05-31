@@ -1,14 +1,5 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import LayoutSide from './pagesSide/components/layout/LayoutSide.tsx';
-import ErrorPage from './errorPage/ErrorPage.tsx';
-
-const router = createBrowserRouter([
-	{
-		path: '/',
-		element: <LayoutSide />,
-		errorElement: <ErrorPage />
-	}
-]);
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes/router.tsx';
 
 const App = () => {
 	return (
