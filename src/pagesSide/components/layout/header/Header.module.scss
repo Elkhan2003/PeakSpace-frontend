@@ -2,6 +2,43 @@
 	position: sticky;
 	top: 0;
 	left: 0;
+	padding-block: 7px;
 	.content {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		.logo {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.nav {
+			ul {
+				display: flex;
+				gap: 30px;
+				justify-content: center;
+				align-items: center;
+				li {
+					.link {
+						padding: 15px 10px;
+						display: flex;
+						gap: 5px;
+						justify-content: center;
+						align-items: center;
+						color: black;
+					}
+				}
+			}
+		}
+		.auth {
+			display: flex;
+			gap: 25px;
+			justify-content: center;
+			align-items: center;
+			a {
+				display: block;
+				padding: 15px 10px;
+			}
+		}
 	}
 }

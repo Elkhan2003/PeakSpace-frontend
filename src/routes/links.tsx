@@ -1,4 +1,9 @@
-import { IconHome } from '@tabler/icons-react';
+import {
+	IconAddressBook,
+	IconCurrencyDollar,
+	IconHome,
+	IconLayoutDashboard
+} from '@tabler/icons-react';
 
 export const links = {
 	side: [
@@ -10,29 +15,29 @@ export const links = {
 		{
 			name: 'About',
 			href: '/about',
-			icon: <IconHome stroke={2} />
+			icon: <IconLayoutDashboard stroke={2} />
 		},
 		{
 			name: 'Price',
 			href: '/price',
-			icon: <IconHome stroke={2} />
+			icon: <IconCurrencyDollar stroke={2} />
 		},
 		{
-			name: 'Contact',
-			href: '/contact',
-			icon: <IconHome stroke={2} />
+			name: 'Contacts',
+			href: '/contacts',
+			icon: <IconAddressBook stroke={2} />
 		}
 	],
-	auth: [
-		{
+	auth: {
+		login: {
 			name: 'Sign In',
 			href: '/login',
-			icon: <IconHome stroke={2} />
+			icon: ''
 		},
-		{
+		registration: {
 			name: 'Sign Up',
 			href: '/registration',
-			icon: <IconHome stroke={2} />
+			icon: ''
 		}
-	]
+	}
 };
