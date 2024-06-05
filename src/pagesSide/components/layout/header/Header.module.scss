@@ -2,7 +2,12 @@
 	position: sticky;
 	top: 0;
 	left: 0;
+	z-index: 999;
+	width: 100%;
+	background: white;
 	padding-block: 7px;
+	border-bottom: 1px solid #e7e8ec;
+
 	.content {
 		display: flex;
 		justify-content: space-between;
@@ -11,24 +16,6 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-		}
-		.nav {
-			ul {
-				display: flex;
-				gap: 30px;
-				justify-content: center;
-				align-items: center;
-				li {
-					.link {
-						padding: 15px 10px;
-						display: flex;
-						gap: 5px;
-						justify-content: center;
-						align-items: center;
-						color: black;
-					}
-				}
-			}
 		}
 		.auth {
 			display: flex;

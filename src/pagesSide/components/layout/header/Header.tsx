@@ -11,17 +11,9 @@ const Header = () => {
 						<div className={scss.logo}>
 							<h1>Logo</h1>
 						</div>
-						<nav className={scss.nav}>
-							<ul>
-								{links.side.map((item, index) => (
-									<li key={index}>
-										<Link className={scss.link} to={item.href}>
-											{item.icon} {item.name}
-										</Link>
-									</li>
-								))}
-							</ul>
-						</nav>
+						<div className={scss.search_input}>
+							<input type="text" placeholder="Enter search" />
+						</div>
 						<div className={scss.auth}>
 							<Link className={scss.login} to={links.auth.login.href}>
 								{links.auth.login.name}

@@ -1,31 +1,43 @@
 import {
-	IconAddressBook,
-	IconCurrencyDollar,
 	IconHome,
-	IconLayoutDashboard
+	IconMessageCircle,
+	IconBell,
+	IconSettings,
+	IconUser,
+	IconUsersGroup
 } from '@tabler/icons-react';
 
 export const links = {
 	side: [
 		{
-			name: 'Home',
+			name: 'Главная',
 			href: '/',
 			icon: <IconHome stroke={2} />
 		},
 		{
-			name: 'About',
-			href: '/about',
-			icon: <IconLayoutDashboard stroke={2} />
+			name: 'Чаты',
+			href: '/chats',
+			icon: <IconMessageCircle stroke={2} />
 		},
 		{
-			name: 'Price',
-			href: '/price',
-			icon: <IconCurrencyDollar stroke={2} />
+			name: 'Уведомления',
+			href: '/notifications',
+			icon: <IconBell stroke={2} />
 		},
 		{
-			name: 'Contacts',
-			href: '/contacts',
-			icon: <IconAddressBook stroke={2} />
+			name: 'Настройки',
+			href: '/settings',
+			icon: <IconSettings stroke={2} />
+		},
+		{
+			name: 'Мой профиль',
+			href: '/my-profile',
+			icon: <IconUser stroke={2} />
+		},
+		{
+			name: 'Мои паблики',
+			href: '/my-public',
+			icon: <IconUsersGroup stroke={2} />
 		}
 	],
 	auth: {
