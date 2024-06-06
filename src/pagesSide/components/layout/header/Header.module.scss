@@ -11,6 +11,7 @@
 	.content {
 		position: relative;
 		display: flex;
+		gap: 20px;
 		justify-content: space-between;
 		align-items: center;
 		.logo {
@@ -25,6 +26,10 @@
 					color: var(--purple);
 				}
 			}
+		}
+		.search {
+			width: 100%;
+			max-width: 800px;
 		}
 		.auth {
 			display: flex;

@@ -1,6 +1,8 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import scss from './Header.module.scss';
 import { useLocation } from 'react-router-dom';
+import Search from 'antd/es/input/Search';
+import { SearchProps } from 'antd/lib/input';
 import { menuLinks, siteLinks } from '@/src/routes/links.tsx';
 import ProfileButton from '@/src/ui/profileButton/ProfileButton.tsx';
 import ProfileMenu from '@/src/ui/profileMenu/ProfileMenu.tsx';
@@ -10,25 +12,14 @@ import BurgerMenu from '@/src/ui/burgerMenu/BurgerMenu.tsx';
 interface HeaderProps {
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
+	isMobile: boolean;
 }
 
-const Header: FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
+const Header: FC<HeaderProps> = ({ isOpen, setIsOpen, isMobile }) => {
 	const { pathname } = useLocation();
-	// const [headerScroll, setHeaderScroll] = useState(false);
-	const [isMobile, setIsMobile] = useState(false);
 
-	useEffect(() => {
-		// const handleScroll = () => setHeaderScroll(window.scrollY >= 10);
-		const handleResize = () => setIsMobile(window.innerWidth < 1000);
-		// handleScroll();
-		handleResize();
-		// window.addEventListener('scroll', handleScroll);
-		window.addEventListener('resize', handleResize);
-		return () => {
-			// window.removeEventListener('scroll', handleScroll);
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
+	const onSearch: SearchProps['onSearch'] = (value, _e, info) =>
+		console.log(info?.source, value);
 
 	return (
 		<>
@@ -40,9 +31,12 @@ const Header: FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
 								Peak<span>space</span>
 							</h1>
 						</button>
-						<div className={scss.search_input}>
-							<input type="text" placeholder="Enter search" />
-						</div>
+						<Search
+							placeholder="input search text"
+							allowClear
+							onSearch={onSearch}
+							className={scss.search}
+						/>
 						{!isMobile ? (
 							<>
 								<ProfileButton isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -57,7 +51,6 @@ const Header: FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
 							<>
 								<BurgerButton isOpen={isOpen} setIsOpen={setIsOpen} />
 								<BurgerMenu
-									menuLinks={menuLinks}
 									siteLinks={siteLinks}
 									isOpen={isOpen}
 									setIsOpen={setIsOpen}

@@ -19,7 +19,7 @@ const ProfileButton: FC<ProfileButtonProps> = ({ isOpen, setIsOpen }) => {
 				}}
 			>
 				<Avatar
-					size={40}
+					size={38}
 					icon={
 						<img
 							src="https://elcho.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felcho911.eabc74a3.png&w=640&q=75"

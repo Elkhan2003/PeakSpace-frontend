@@ -10,7 +10,6 @@ interface LinksType {
 }
 
 interface BurgerMenuProps {
-	menuLinks: LinksType[];
 	siteLinks: LinksType[];
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
@@ -18,7 +17,6 @@ interface BurgerMenuProps {
 }
 
 const BurgerMenu: FC<BurgerMenuProps> = ({
-	menuLinks,
 	siteLinks,
 	isOpen,
 	setIsOpen,
@@ -35,7 +33,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
 				<div className={scss.content}>
 					<div className={scss.user_profile}>
 						<Avatar
-							size={64}
+							size={40}
 							icon={
 								<img
 									src="https://elcho.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felcho911.eabc74a3.png&w=640&q=75"
@@ -50,21 +48,6 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
 					</div>
 					<nav className={scss.nav}>
 						<ul>
-							{menuLinks.map((item, index) => (
-								<li key={index}>
-									<Link
-										className={
-											pathname === item.href
-												? `${scss.link} ${scss.active}`
-												: `${scss.link}`
-										}
-										to={item.href}
-										onClick={() => setIsOpen(false)}
-									>
-										{item.name}
-									</Link>
-								</li>
-							))}
 							{siteLinks.map((item, index) => (
 								<li key={index}>
 									<Link
