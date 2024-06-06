@@ -7,6 +7,7 @@
 			justify-content: flex-start;
 			align-items: flex-start;
 			li {
+				position: relative;
 				width: 100%;
 				.link {
 					padding: 10px 12px;
@@ -18,7 +19,16 @@
 					color: #000000b2;
 					transition: var(--transition);
 					&:hover {
-						background: var(--white);
+						background: var(--white-bg);
+					}
+					.active {
+						position: absolute;
+						left: 0;
+						bottom: 0;
+						width: 2px;
+						height: 100%;
+						background: var(--purple);
+						border-radius: var(--border-radius);
 					}
 				}
 			}

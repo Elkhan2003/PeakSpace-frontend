@@ -2,9 +2,11 @@ import { createBrowserRouter } from 'react-router-dom';
 import LayoutSide from '@/src/pagesSide/components/layout/LayoutSide.tsx';
 import ErrorPage from '@/src/errorPage/ErrorPage.tsx';
 import HomePage from '@/src/pagesSide/components/pages/HomePage.tsx';
-import AboutPage from '@/src/pagesSide/components/pages/AboutPage.tsx';
-import PricePage from '@/src/pagesSide/components/pages/PricePage.tsx';
-import ContactsPage from '@/src/pagesSide/components/pages/ContactsPage.tsx';
+import ChatsPage from '@/src/pagesSide/components/pages/ChatsPage.tsx';
+import NotificationPage from '@/src/pagesSide/components/pages/NotificationPage.tsx';
+import SettingsPage from '@/src/pagesSide/components/pages/SettingsPage.tsx';
+import MyProfilePage from '@/src/pagesSide/components/pages/MyProfilePage.tsx';
+import MyPublicPage from '@/src/pagesSide/components/pages/MyPublicPage.tsx';
 import LayoutAuth from '@/src/pagesAuth/components/layout/LayoutAuth.tsx';
 import LoginPage from '@/src/pagesAuth/components/pages/LoginPage.tsx';
 import RegistrationPage from '@/src/pagesAuth/components/pages/RegistrationPage.tsx';
@@ -21,16 +23,24 @@ export const router = createBrowserRouter([
 				element: <HomePage />
 			},
 			{
-				path: '/about',
-				element: <AboutPage />
+				path: '/chats',
+				element: <ChatsPage />
 			},
 			{
-				path: '/price',
-				element: <PricePage />
+				path: '/notifications',
+				element: <NotificationPage />
 			},
 			{
-				path: '/contacts',
-				element: <ContactsPage />
+				path: '/settings',
+				element: <SettingsPage />
+			},
+			{
+				path: '/my-profile',
+				element: <MyProfilePage />
+			},
+			{
+				path: '/my-public',
+				element: <MyPublicPage />
 			}
 		]
 	},

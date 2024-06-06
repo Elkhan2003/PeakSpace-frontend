@@ -84,7 +84,7 @@ const News = () => {
 			<section className={scss.News}>
 				<div className={scss.container}>
 					<div className={scss.content}>
-						<h2>News:</h2>
+						<h1>News:</h1>
 						{siliconValleyHistory.map((item) => (
 							<div>
 								<h4>{item.era}</h4>

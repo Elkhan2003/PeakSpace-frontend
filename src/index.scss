@@ -7,7 +7,7 @@
 	background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-	background: #6741d9;
+	background: #9336fd;
 	border-radius: 10px;
 }
 * {
@@ -57,7 +57,9 @@ body {
 	--navy: #0a192f;
 	--navy-shadow: #020c1bb3;
 	--slate: #99a3c0;
-	--white: #e6f1ff;
+	--white: #fff;
+	--white-bg: #e6f1ff;
+	--white-bg-hover: #f3f9ff;
 	--border-radius: 4px;
 	--transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }

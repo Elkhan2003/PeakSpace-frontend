@@ -1,5 +1,5 @@
 import Welcome from './homeSections/Welcome.tsx';
-import News from '@/src/pagesSide/components/pages/homeSections/News.tsx';
+import News from './homeSections/News.tsx';
 
 const HomePage = () => {
 	return (
