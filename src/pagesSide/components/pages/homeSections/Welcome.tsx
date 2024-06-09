@@ -16,7 +16,7 @@ const Welcome = () => {
 	const [messages, setMessages] = useState<Message[]>([]);
 
 	const connect = () => {
-		socket.current = new WebSocket('ws://localhost:5000');
+		socket.current = new WebSocket(import.meta.env.VITE_PUBLIC_API_URL);
 		socket.current.onopen = () => {
 			console.log('WebSocket Connected');
 			setConnected(true);
