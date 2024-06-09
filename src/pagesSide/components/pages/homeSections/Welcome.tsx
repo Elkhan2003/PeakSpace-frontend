@@ -1,46 +1,109 @@
 import scss from './Welcome.module.scss';
+import { useRef, useState, useEffect } from 'react';
+
+interface Message {
+	event: string;
+	id: number;
+	username: string;
+	message?: string;
+}
 
 const Welcome = () => {
+	const socket = useRef<WebSocket | null>(null);
+	const [connected, setConnected] = useState(false);
+	const [username, setUsername] = useState('');
+	const [message, setMessage] = useState('');
+	const [messages, setMessages] = useState<Message[]>([]);
+
+	const connect = () => {
+		socket.current = new WebSocket('ws://localhost:5000');
+		socket.current.onopen = () => {
+			console.log('WebSocket Connected');
+			setConnected(true);
+			const message = {
+				event: 'connection',
+				id: Date.now(),
+				username
+			};
+			socket.current?.send(JSON.stringify(message));
+		};
+		socket.current.onmessage = (event) => {
+			console.log('WebSocket message received');
+			const message: Message = JSON.parse(event.data);
+			setMessages((prev) => [message, ...prev]);
+		};
+		socket.current.onclose = () => {
+			console.log('WebSocket closed');
+			setConnected(false);
+		};
+		socket.current.onerror = () => {
+			console.log('WebSocket error');
+			setConnected(false);
+		};
+	};
+
+	const sendMessage = () => {
+		if (socket.current && connected) {
+			const messageData = {
+				event: 'message',
+				id: Date.now(),
+				username,
+				message
+			};
+			socket.current.send(JSON.stringify(messageData));
+			setMessage('');
+		}
+	};
+
+	useEffect(() => {
+		return () => {
+			if (socket.current) {
+				socket.current.close();
+			}
+		};
+	}, []);
+
+	if (!connected) {
+		return (
+			<div>
+				<input
+					type="text"
+					placeholder="Enter username"
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+				/>
+				<button onClick={connect}>Login</button>
+			</div>
+		);
+	}
+
 	return (
-		<>
-			<section className={scss.Welcome}>
-				<div className={scss.container}>
-					<div className={scss.content}>
-						<h1>Welcome Developer!</h1>
-						<p>
-							Жил-был программист по имени Эльхан. Он был настоящим мастером
-							своего дела, работая с технологиями TypeScript, NodeJS, NextJS и
-							NestJS. Эльхан жил в маленькой деревушке, но его знания и умения
-							были известны далеко за ее пределами. Каждое утро Эльхан начинал с
-							того, что запускал свой компьютер и погружался в мир кода. Он
-							создавал удивительные приложения, которые помогали людям в их
-							повседневной жизни. Его код был чистым и эффективным, и каждый,
-							кто видел его работу, поражался мастерству Эльхана. Однажды в
-							деревню пришла беда. Местный рынок, на котором все жители покупали
-							и продавали свои товары, вышел из строя. Вся система была
-							цифровой, и из-за ошибки в коде никто не мог торговать. Люди были
-							в панике и не знали, что делать. Жители деревни обратились к
-							Эльхану за помощью. Они знали, что если кто-то и может решить эту
-							проблему, то это именно он. Эльхан с радостью согласился помочь.
-							Он сел за свой компьютер и начал исследовать код рынка. Он быстро
-							обнаружил, что проблема была в одной из библиотек, которая
-							использовалась для обработки платежей. Эльхан решил переписать
-							этот участок кода, используя TypeScript и NestJS, чтобы сделать
-							его более надежным и безопасным. Несколько часов упорного труда -
-							и система вновь заработала. Жители деревни были в восторге. Теперь
-							рынок работал быстрее и надежнее, чем когда-либо. Все благодарили
-							Эльхана за его труды. С этого дня Эльхан стал настоящим героем
-							деревни. Его уважали и ценили за его знания и умения. Он продолжал
-							создавать новые и удивительные приложения, которые делали жизнь
-							людей лучше. И жил Эльхан долго и счастливо, каждый день
-							погружаясь в мир кода и помогая людям своими удивительными
-							способностями. Вот такая сказка про Эльхана, программиста
-							FullStack, мастера TypeScript, NodeJS, NextJS и NestJS.
-						</p>
+		<section className={scss.Welcome}>
+			<div className={scss.container}>
+				<div className={scss.content}>
+					<h1>Welcome Developer!</h1>
+					<input
+						type="text"
+						value={message}
+						onChange={(e) => setMessage(e.target.value)}
+					/>
+					<button onClick={sendMessage}>Send</button>
+					<div>
+						{messages.map((msg, index) => (
+							<p key={index}>
+								{msg.event === 'connection' ? (
+									<div>Пользователь {msg.username} подключился</div>
+								) : (
+									<div>
+										{msg.username}: {msg.message}
+									</div>
+								)}
+							</p>
+						))}
 					</div>
 				</div>
-			</section>
-		</>
+			</div>
+		</section>
 	);
 };
 

@@ -85,8 +85,8 @@ const News = () => {
 				<div className={scss.container}>
 					<div className={scss.content}>
 						<h1>News:</h1>
-						{siliconValleyHistory.map((item) => (
-							<div>
+						{siliconValleyHistory.map((item, index) => (
+							<div key={index}>
 								<h4>{item.era}</h4>
 								<p>{item.description}</p>
 							</div>
