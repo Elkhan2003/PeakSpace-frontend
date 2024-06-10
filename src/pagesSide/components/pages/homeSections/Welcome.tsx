@@ -1,5 +1,6 @@
 import scss from './Welcome.module.scss';
 import { useRef, useState, useEffect } from 'react';
+import { Button, Input } from 'antd';
 
 interface Message {
 	event: string;
@@ -65,14 +66,26 @@ const Welcome = () => {
 
 	if (!connected) {
 		return (
-			<div>
-				<input
-					type="text"
-					placeholder="Enter username"
+			<div
+				style={{
+					display: 'flex',
+					// justifyContent: 'center',
+					alignItems: 'center',
+					padding: '15px',
+					background: '#83858b'
+				}}
+			>
+				<Input
+					style={{
+						width: '300px'
+					}}
+					placeholder="Your login username"
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 				/>
-				<button onClick={connect}>Login</button>
+				<Button type="primary" onClick={connect}>
+					Login
+				</Button>
 			</div>
 		);
 	}
@@ -82,19 +95,45 @@ const Welcome = () => {
 			<div className={scss.container}>
 				<div className={scss.content}>
 					<h1>Welcome Developer!</h1>
-					<input
-						type="text"
-						value={message}
-						onChange={(e) => setMessage(e.target.value)}
-					/>
-					<button onClick={sendMessage}>Send</button>
+					<div
+						style={{
+							display: 'flex',
+							// justifyContent: 'center',
+							alignItems: 'center',
+							padding: '15px',
+							background: '#83858b'
+						}}
+					>
+						<Input
+							style={{
+								width: '300px'
+							}}
+							placeholder="Your message"
+							value={message}
+							onChange={(e) => setMessage(e.target.value)}
+						/>
+						<Button type="primary" onClick={sendMessage}>
+							Send
+						</Button>
+					</div>
 					<div>
 						{messages.map((msg, index) => (
 							<p key={index}>
 								{msg.event === 'connection' ? (
 									<div>Пользователь {msg.username} подключился</div>
 								) : (
-									<div>
+									<div
+										style={{
+											display: 'flex',
+											// justifyContent: 'center',
+											alignItems: 'center',
+											padding: '7px',
+											margin: '10px 0',
+											borderRadius: '5px',
+											background: '#9c68ff',
+											color: '#fff'
+										}}
+									>
 										{msg.username}: {msg.message}
 									</div>
 								)}
