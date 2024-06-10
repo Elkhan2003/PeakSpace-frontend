@@ -4,7 +4,6 @@ import { Button, Input } from 'antd';
 
 interface Message {
 	event: string;
-	id: number;
 	username: string;
 	message?: string;
 }
@@ -23,7 +22,6 @@ const Chats = () => {
 			setConnected(true);
 			const message = {
 				event: 'connection',
-				id: Date.now(),
 				username
 			};
 			socket.current?.send(JSON.stringify(message));
@@ -43,11 +41,14 @@ const Chats = () => {
 		};
 	};
 
+	const logout = () => {
+		socket.current?.close();
+	};
+
 	const sendMessage = () => {
 		if (socket.current && connected) {
 			const messageData = {
 				event: 'message',
-				id: Date.now(),
 				username,
 				message
 			};
@@ -114,6 +115,9 @@ const Chats = () => {
 						/>
 						<Button type="primary" onClick={sendMessage}>
 							Send
+						</Button>
+						<Button type="primary" onClick={logout}>
+							Logout
 						</Button>
 					</div>
 					<div>
