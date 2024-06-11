@@ -1,5 +1,5 @@
 import scss from './Chats.module.scss';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { Button, Input } from 'antd';
 
 interface Message {
@@ -18,7 +18,7 @@ const Chats = () => {
 	const connect = () => {
 		socket.current = new WebSocket(import.meta.env.VITE_PUBLIC_API_WSS);
 		socket.current.onopen = () => {
-			console.log('WebSocket Connected');
+			console.log('Подключился WebSocket ✅');
 			setConnected(true);
 			const message = {
 				event: 'connection',
@@ -27,8 +27,9 @@ const Chats = () => {
 			socket.current?.send(JSON.stringify(message));
 		};
 		socket.current.onmessage = (event) => {
-			console.log('WebSocket message received');
+			console.log('Сообщение было отправлено');
 			const message: Message = JSON.parse(event.data);
+
 			setMessages((prev) => [message, ...prev]);
 		};
 		socket.current.onclose = () => {
@@ -46,104 +47,69 @@ const Chats = () => {
 	};
 
 	const sendMessage = () => {
-		if (socket.current && connected) {
-			const messageData = {
-				event: 'message',
-				username,
-				message
-			};
-			socket.current.send(JSON.stringify(messageData));
-			setMessage('');
-		}
-	};
-
-	useEffect(() => {
-		return () => {
-			if (socket.current) {
-				socket.current.close();
-			}
+		const messageData = {
+			event: 'message',
+			username,
+			message
 		};
-	}, []);
-
-	if (!connected) {
-		return (
-			<div
-				style={{
-					display: 'flex',
-					// justifyContent: 'center',
-					alignItems: 'center',
-					padding: '15px',
-					background: '#83858b'
-				}}
-			>
-				<Input
-					style={{
-						width: '300px'
-					}}
-					placeholder="Your login username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
-				<Button type="primary" onClick={connect}>
-					Login
-				</Button>
-			</div>
-		);
-	}
+		socket.current?.send(JSON.stringify(messageData));
+		setMessage('');
+	};
 
 	return (
 		<section className={scss.Chats}>
 			<div className={scss.container}>
 				<div className={scss.content}>
-					<h1>Welcome {username} Developer 😈!</h1>
-					<div
-						style={{
-							display: 'flex',
-							// justifyContent: 'center',
-							alignItems: 'center',
-							padding: '15px',
-							background: '#83858b'
-						}}
-					>
-						<Input
-							style={{
-								width: '300px'
-							}}
-							placeholder="Your message"
-							value={message}
-							onChange={(e) => setMessage(e.target.value)}
-						/>
-						<Button type="primary" onClick={sendMessage}>
-							Send
-						</Button>
-						<Button type="primary" onClick={logout}>
-							Logout
-						</Button>
-					</div>
-					<div>
-						{messages.map((msg, index) => (
-							<p key={index}>
-								{msg.event === 'connection' ? (
-									<div>Пользователь {msg.username} подключился</div>
-								) : (
-									<div
-										style={{
-											display: 'flex',
-											// justifyContent: 'center',
-											alignItems: 'center',
-											padding: '7px',
-											margin: '10px 0',
-											borderRadius: '5px',
-											background: '#9c68ff',
-											color: '#fff'
-										}}
-									>
-										{msg.username}: {msg.message}
+					{!connected ? (
+						<>
+							<div className={scss.auth}>
+								<Input
+									style={{
+										width: '300px'
+									}}
+									placeholder="Your login username"
+									value={username}
+									onChange={(e) => setUsername(e.target.value)}
+								/>
+								<Button type="primary" onClick={connect}>
+									Login
+								</Button>
+							</div>
+						</>
+					) : (
+						<>
+							<h1>Welcome {username} Developer 😈!</h1>
+							<div className={scss.send_message}>
+								<Input
+									style={{
+										width: '300px'
+									}}
+									placeholder="Your message"
+									value={message}
+									onChange={(e) => setMessage(e.target.value)}
+								/>
+								<Button type="primary" onClick={sendMessage}>
+									Send
+								</Button>
+								<Button type="primary" onClick={logout}>
+									Logout
+								</Button>
+							</div>
+							<div className={scss.messages}>
+								{messages.map((msg, index) => (
+									<div key={index}>
+										{msg.event === 'connection' ? (
+											<div>Пользователь {msg.username} подключился</div>
+										) : (
+											<div className={scss.message}>
+												{msg.username}: {msg.message}
+											</div>
+										)}
 									</div>
-								)}
-							</p>
-						))}
-					</div>
+								))}
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 		</section>

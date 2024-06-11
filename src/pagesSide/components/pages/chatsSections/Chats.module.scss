@@ -1,0 +1,27 @@
+.Chats {
+	.content {
+		.auth {
+			padding: 15px;
+			display: flex;
+			align-items: center;
+			background: #83858b;
+		}
+		.send_message {
+			padding: 15px;
+			display: flex;
+			align-items: center;
+			background: #83858b;
+		}
+		.messages {
+			.message {
+				margin-block: 7px;
+				padding: 7px;
+				display: flex;
+				align-items: center;
+				background: #9c68ff;
+				border-radius: 5px;
+				color: #fff;
+			}
+		}
+	}
+}
