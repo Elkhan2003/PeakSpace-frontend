@@ -42,7 +42,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
 							}
 						/>
 						<div className={scss.user_data}>
-							<p className={scss.user_name}>Islam Bro</p>
+							<p className={scss.user_name}>Elcho911</p>
 							<p className={scss.user_email}>boss.armsport@gmail.com</p>
 						</div>
 					</div>
