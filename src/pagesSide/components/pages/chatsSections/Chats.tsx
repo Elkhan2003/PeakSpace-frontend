@@ -97,12 +97,19 @@ const Chats = () => {
 							</div>
 							<div className={scss.messages}>
 								{messages.map((msg, index) => (
-									<div key={index}>
+									<div
+										key={index}
+										className={`${scss.message} ${
+											msg.username === username ? scss.self : scss.other
+										}`}
+									>
 										{msg.event === 'connection' ? (
-											<div>Пользователь {msg.username} подключился</div>
+											<div className={scss.user_name}>
+												💜 Пользователь <span>{msg.username}</span> подключился
+											</div>
 										) : (
-											<div className={scss.message}>
-												{msg.username}: {msg.message}
+											<div className={scss.user_message}>
+												<strong>{msg.username}:</strong> {msg.message}
 											</div>
 										)}
 									</div>
