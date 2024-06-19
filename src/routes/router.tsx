@@ -11,11 +11,16 @@ import LayoutAuth from '@/src/pagesAuth/components/layout/LayoutAuth.tsx';
 import LoginPage from '@/src/pagesAuth/components/pages/LoginPage.tsx';
 import RegistrationPage from '@/src/pagesAuth/components/pages/RegistrationPage.tsx';
 import ForgotPage from '@/src/pagesAuth/components/pages/ForgotPage.tsx';
+import { SessionProvider } from '@/src/providers/SessionProvider.tsx';
 
 export const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <LayoutSide />,
+		element: (
+			<SessionProvider>
+				<LayoutSide />
+			</SessionProvider>
+		),
 		errorElement: <ErrorPage />,
 		children: [
 			{
@@ -46,7 +51,11 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: '/auth',
-		element: <LayoutAuth />,
+		element: (
+			<SessionProvider>
+				<LayoutAuth />
+			</SessionProvider>
+		),
 		children: [
 			{
 				path: '/auth/login',

@@ -1,34 +1,37 @@
-import { FC, ReactNode } from 'react';
-// import { useRouter, usePathname } from 'next/navigation';
-// import { useGetMeQuery } from '@/redux/api/me';
+import { FC, ReactNode, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useGetMeQuery } from '../redux/api/auth';
 
 interface ProtectedRouteProps {
 	children: ReactNode;
 }
 
 export const SessionProvider: FC<ProtectedRouteProps> = ({ children }) => {
-	// const { status } = useGetMeQuery();
-	// const pathname = usePathname();
-	// const router = useRouter();
-	//
-	// useEffect(() => {
-	// 	switch (pathname) {
-	// 		case '/login':
-	// 			if (status === 'fulfilled') {
-	// 				router.push('/dashboard');
-	// 			}
-	// 			break;
-	// 		case '/dashboard':
-	// 		case '/statistics':
-	// 		case '/rating':
-	// 			if (status === 'rejected') {
-	// 				router.push('/login');
-	// 			}
-	// 			break;
-	// 		default:
-	// 			break;
-	// 	}
-	// }, [status, pathname, router]);
+	const { status } = useGetMeQuery();
+	const { pathname } = useLocation();
+	const navigate = useNavigate();
+
+	const handleNavigation = () => {
+		switch (pathname) {
+			case '/auth/login':
+			case '/auth/registration':
+				if (status === 'fulfilled') {
+					navigate('/');
+				}
+				break;
+			case '/':
+				if (status === 'rejected') {
+					navigate('/auth/login');
+				}
+				break;
+			default:
+				break;
+		}
+	};
+
+	useEffect(() => {
+		handleNavigation();
+	}, [status, pathname, navigate]);
 
 	return children;
 };

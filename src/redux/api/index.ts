@@ -7,6 +7,10 @@ import {
 const baseQuery = fetchBaseQuery({
 	baseUrl: `${import.meta.env.VITE_PUBLIC_API_URL}/api/v1`,
 	prepareHeaders: (headers) => {
+		const token = JSON.parse(String(localStorage.getItem('accessToken')));
+		if (token) {
+			headers.set('Authorization', `Bearer ${token}`);
+		}
 		return headers;
 	},
 	credentials: 'include'
@@ -22,6 +26,6 @@ export const api = createApi({
 	baseQuery: baseQueryExtended,
 	refetchOnReconnect: true,
 	refetchOnFocus: false,
-	tagTypes: ['me', 'rating'],
+	tagTypes: ['auth', 'rating'],
 	endpoints: () => ({})
 });
