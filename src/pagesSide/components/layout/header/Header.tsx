@@ -8,6 +8,7 @@ import ProfileButton from '@/src/ui/profileButton/ProfileButton.tsx';
 import ProfileMenu from '@/src/ui/profileMenu/ProfileMenu.tsx';
 import BurgerButton from '@/src/ui/burgerButton/BurgerButton.tsx';
 import BurgerMenu from '@/src/ui/burgerMenu/BurgerMenu.tsx';
+import logo from '@/src/assets/logo.png';
 
 interface HeaderProps {
 	isOpen: boolean;
@@ -27,9 +28,10 @@ const Header: FC<HeaderProps> = ({ isOpen, setIsOpen, isMobile }) => {
 				<div className="container">
 					<div className={scss.content}>
 						<button className={scss.logo}>
-							<h1>
-								Peak<span>space</span>
-							</h1>
+							<img src={logo} alt="logo" />
+							{/*<h1>*/}
+							{/*	Peak<span>space</span>*/}
+							{/*</h1>*/}
 						</button>
 						<Search
 							placeholder="input search text"

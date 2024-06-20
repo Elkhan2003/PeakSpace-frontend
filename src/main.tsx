@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import { ReduxProvider } from './providers/ReduxProvider.tsx';
 import App from './App.tsx';
 import './index.scss';
+import AntdProvider from '@/src/providers/AntdProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
-		<ReduxProvider>
-			<App />
-		</ReduxProvider>
+		<AntdProvider>
+			<ReduxProvider>
+				<App />
+			</ReduxProvider>
+		</AntdProvider>
 	</React.StrictMode>
 );

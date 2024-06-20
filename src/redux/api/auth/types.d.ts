@@ -20,10 +20,16 @@ namespace AUTH {
 		accessTokenExpiration: number;
 	};
 	type PostRegistrationRequest = {
+		// login: string;
+		// password: string;
+		// userName: string;
+		// photo: string;
+		lastName: string;
+		firstName: string;
+		userName: string;
 		login: string;
 		password: string;
-		userName: string;
-		photo: string;
+		confirmPassword: string;
 	};
 
 	type PostLogoutResponse = {
