@@ -1,35 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 namespace AUTH {
-	type GetMeResponse = {
-		profile: User;
-	};
+	type GetMeResponse = User;
 	type GetMeRequest = void;
 
 	type PostLoginResponse = {
-		accessToken: string;
-		accessTokenExpiration: number;
+		id: number;
+		token: string;
 	};
 	type PostLoginRequest = {
-		login: string;
+		email: string;
 		password: string;
 	};
 
 	type PostRegistrationResponse = {
+		userId: number;
 		message: string;
-		accessToken: string;
-		accessTokenExpiration: number;
 	};
 	type PostRegistrationRequest = {
-		// login: string;
-		// password: string;
-		// userName: string;
-		// photo: string;
 		lastName: string;
 		firstName: string;
 		userName: string;
-		login: string;
+		email: string;
 		password: string;
-		confirmPassword: string;
 	};
 
 	type PostLogoutResponse = {

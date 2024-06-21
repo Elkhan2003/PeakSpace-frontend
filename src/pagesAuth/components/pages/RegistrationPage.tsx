@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import scss from './RegistrationPage.module.scss';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -11,14 +10,116 @@ interface IFormInput {
 	lastName: string;
 	firstName: string;
 	userName: string;
-	login: string;
+	email: string;
 	password: string;
 	confirmPassword: string;
 }
 
+const InputField = ({ name, control, rules, placeholder, errors }: any) => (
+	<Controller
+		name={name}
+		control={control}
+		rules={rules}
+		render={({ field }) => (
+			<Input
+				status={errors[name] ? 'error' : ''}
+				className={scss.input}
+				size="large"
+				placeholder={placeholder}
+				{...field}
+			/>
+		)}
+	/>
+);
+
+const PasswordField = ({ name, control, rules, placeholder, errors }: any) => (
+	<Controller
+		name={name}
+		control={control}
+		rules={rules}
+		render={({ field }) => (
+			<Input.Password
+				status={errors[name] ? 'error' : ''}
+				className={scss.input}
+				size="large"
+				placeholder={placeholder}
+				{...field}
+			/>
+		)}
+	/>
+);
+
+const RegistrationForm = ({
+	handleSubmit,
+	control,
+	errors,
+	password,
+	handleRememberMeChange,
+	onSubmit
+}: any) => (
+	<form onSubmit={handleSubmit(onSubmit)}>
+		<InputField
+			name="lastName"
+			control={control}
+			rules={{ required: true }}
+			placeholder="Фамилия"
+			errors={errors}
+		/>
+		<InputField
+			name="firstName"
+			control={control}
+			rules={{ required: true }}
+			placeholder="Имя"
+			errors={errors}
+		/>
+		<InputField
+			name="userName"
+			control={control}
+			rules={{ required: true }}
+			placeholder="Имя пользователя"
+			errors={errors}
+		/>
+		<InputField
+			name="email"
+			control={control}
+			rules={{ required: true }}
+			placeholder="Номер телефона или email"
+			errors={errors}
+		/>
+		<PasswordField
+			name="password"
+			control={control}
+			rules={{ required: true }}
+			placeholder="Пароль"
+			errors={errors}
+		/>
+		<PasswordField
+			name="confirmPassword"
+			control={control}
+			rules={{
+				required: true,
+				validate: (value: string) => value === password || 'Пароли не совпадают'
+			}}
+			placeholder="Повторите пароль"
+			errors={errors}
+		/>
+		<Checkbox className={scss.customCheckbox} onChange={handleRememberMeChange}>
+			Сохранить вход
+		</Checkbox>
+		<Button type="primary" size="large" block htmlType="submit">
+			Зарегистрироваться
+		</Button>
+	</form>
+);
+
 const RegistrationPage = () => {
 	const [postRegisterMutation] = usePostRegistrationMutation();
-	const { control, handleSubmit } = useForm<IFormInput>();
+	const {
+		control,
+		handleSubmit,
+		watch,
+		formState: { errors }
+	} = useForm<IFormInput>();
 	const [attempt, setAttempt] = useState(0);
 	const [rememberMe, setRememberMe] = useState(false);
 	const maxAttempts = 3;
@@ -44,112 +145,37 @@ const RegistrationPage = () => {
 			return;
 		}
 
+		const userDataRest = {
+			lastName: userData.lastName,
+			firstName: userData.firstName,
+			userName: userData.userName,
+			email: userData.email,
+			password: userData.password
+		};
+
 		try {
-			const response = await postRegisterMutation(userData);
+			const response = await postRegisterMutation(userDataRest);
 			handleResponse(response, userData);
 		} catch (e) {
 			console.error('An error occurred:', e);
 		}
 	};
 
-	const renderForm = () => (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<Controller
-				name="lastName"
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<Input
-						className={scss.input}
-						size="large"
-						placeholder="Фамилия"
-						{...field}
-					/>
-				)}
-			/>
-			<Controller
-				name="firstName"
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<Input
-						className={scss.input}
-						size="large"
-						placeholder="Имя"
-						{...field}
-					/>
-				)}
-			/>
-			<Controller
-				name="userName"
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<Input
-						className={scss.input}
-						size="large"
-						placeholder="Имя пользователя"
-						{...field}
-					/>
-				)}
-			/>
-			<Controller
-				name="login"
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<Input
-						className={scss.input}
-						size="large"
-						placeholder="Номер телефона или email"
-						{...field}
-					/>
-				)}
-			/>
-			<Controller
-				name="password"
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<Input.Password
-						className={scss.input}
-						size="large"
-						placeholder="Пароль"
-						{...field}
-					/>
-				)}
-			/>
-			<Controller
-				name="confirmPassword"
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<Input.Password
-						className={scss.input}
-						size="large"
-						placeholder="Повторите пароль"
-						{...field}
-					/>
-				)}
-			/>
-			<Checkbox
-				className={scss.customCheckbox}
-				onChange={handleRememberMeChange}
-			>
-				Сохранить вход
-			</Checkbox>
-			<Button type="primary" size="large" block htmlType="submit">
-				Зарегистрироваться
-			</Button>
-		</form>
-	);
+	const password = watch('password');
 
 	return (
 		<section className={scss.RegistrationPage}>
 			<div className={scss.container}>
 				<div className={scss.content}>
 					<img className={scss.logo} src={logo} alt="logo" />
-					{renderForm()}
+					<RegistrationForm
+						handleSubmit={handleSubmit}
+						control={control}
+						errors={errors}
+						password={password}
+						handleRememberMeChange={handleRememberMeChange}
+						onSubmit={onSubmit}
+					/>
 				</div>
 			</div>
 		</section>

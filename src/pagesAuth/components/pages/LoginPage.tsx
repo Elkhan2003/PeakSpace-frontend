@@ -8,7 +8,7 @@ import { Button, Checkbox, Input } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 interface IFormInput {
-	login: string;
+	email: string;
 	password: string;
 }
 
@@ -51,7 +51,7 @@ const LoginPage = () => {
 	const renderForm = () => (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<Controller
-				name="login"
+				name="email"
 				control={control}
 				rules={{ required: true }}
 				render={({ field }) => (
