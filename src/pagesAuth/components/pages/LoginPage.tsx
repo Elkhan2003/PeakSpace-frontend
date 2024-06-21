@@ -38,7 +38,7 @@ const LoginPage = () => {
 			<Controller
 				name="email"
 				control={control}
-				rules={{ required: true }}
+				rules={{ required: true, minLength: 2, pattern: /^\S+@\S+\.\S+$/i }}
 				render={({ field }) => (
 					<Input
 						className={scss.input}
@@ -51,7 +51,7 @@ const LoginPage = () => {
 			<Controller
 				name="password"
 				control={control}
-				rules={{ required: true }}
+				rules={{ required: true, minLength: 2 }}
 				render={({ field }) => (
 					<Input.Password
 						className={scss.input}

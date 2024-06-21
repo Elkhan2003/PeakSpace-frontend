@@ -61,35 +61,35 @@ const RegistrationForm = ({
 		<InputField
 			name="lastName"
 			control={control}
-			rules={{ required: true }}
+			rules={{ required: true, minLength: 2 }}
 			placeholder="Фамилия"
 			errors={errors}
 		/>
 		<InputField
 			name="firstName"
 			control={control}
-			rules={{ required: true }}
+			rules={{ required: true, minLength: 2 }}
 			placeholder="Имя"
 			errors={errors}
 		/>
 		<InputField
 			name="userName"
 			control={control}
-			rules={{ required: true }}
+			rules={{ required: true, minLength: 2 }}
 			placeholder="Имя пользователя"
 			errors={errors}
 		/>
 		<InputField
 			name="email"
 			control={control}
-			rules={{ required: true }}
+			rules={{ required: true, minLength: 2, pattern: /^\S+@\S+\.\S+$/i }}
 			placeholder="Номер телефона или email"
 			errors={errors}
 		/>
 		<PasswordField
 			name="password"
 			control={control}
-			rules={{ required: true }}
+			rules={{ required: true, minLength: 2 }}
 			placeholder="Пароль"
 			errors={errors}
 		/>
@@ -98,6 +98,7 @@ const RegistrationForm = ({
 			control={control}
 			rules={{
 				required: true,
+				minLength: 2,
 				validate: (value: string) => value === password || 'Пароли не совпадают'
 			}}
 			placeholder="Повторите пароль"
