@@ -38,7 +38,7 @@ const LoginPage = () => {
 			<Controller
 				name="email"
 				control={control}
-				rules={{ required: true, minLength: 2, pattern: /^\S+@\S+\.\S+$/i }}
+				rules={{ required: true, minLength: 2 }}
 				render={({ field }) => (
 					<Input
 						className={scss.input}
