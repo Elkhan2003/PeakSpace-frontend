@@ -14,14 +14,22 @@ interface ProfileMenuProps {
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
 	pathname: string;
+	user: User | null;
 }
 
 const ProfileMenu: FC<ProfileMenuProps> = ({
 	menuLinks,
 	isOpen,
 	setIsOpen,
-	pathname
+	pathname,
+	user
 }) => {
+	const logout = () => {
+		localStorage.removeItem('accessToken');
+		sessionStorage.removeItem('accessToken');
+		window.location.reload();
+	};
+
 	return (
 		<>
 			<div
@@ -32,17 +40,11 @@ const ProfileMenu: FC<ProfileMenuProps> = ({
 			>
 				<div className={scss.content}>
 					<div className={scss.user_profile}>
-						<Avatar
-							size={50}
-							icon={
-								<img
-									src="https://elcho.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felcho911.eabc74a3.png&w=640&q=75"
-									alt="avatar"
-								/>
-							}
-						/>
+						<Avatar size={50} icon={<img src={user?.avatar} alt="avatar" />} />
 						<div className={scss.user_data}>
-							<p className={scss.user_name}>Elcho911</p>
+							<p className={scss.user_name}>
+								{user?.firstName} {user?.lastName}
+							</p>
 							<p className={scss.user_email}>boss.armsport@gmail.com</p>
 						</div>
 					</div>
@@ -66,7 +68,7 @@ const ProfileMenu: FC<ProfileMenuProps> = ({
 						</ul>
 					</nav>
 					<div className={scss.auth}>
-						<button className={scss.logout}>
+						<button className={scss.logout} onClick={logout}>
 							<IconLogout stroke={2} /> Log Out
 						</button>
 					</div>

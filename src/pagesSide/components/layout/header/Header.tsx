@@ -14,9 +14,10 @@ interface HeaderProps {
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
 	isMobile: boolean;
+	user: User;
 }
 
-const Header: FC<HeaderProps> = ({ isOpen, setIsOpen, isMobile }) => {
+const Header: FC<HeaderProps> = ({ isOpen, setIsOpen, isMobile, user }) => {
 	const { pathname } = useLocation();
 
 	const onSearch: SearchProps['onSearch'] = (value, _e, info) =>
@@ -29,9 +30,6 @@ const Header: FC<HeaderProps> = ({ isOpen, setIsOpen, isMobile }) => {
 					<div className={scss.content}>
 						<button className={scss.logo}>
 							<img src={logo} alt="logo" />
-							{/*<h1>*/}
-							{/*	Peak<span>space</span>*/}
-							{/*</h1>*/}
 						</button>
 						<Search
 							placeholder="input search text"
@@ -41,12 +39,17 @@ const Header: FC<HeaderProps> = ({ isOpen, setIsOpen, isMobile }) => {
 						/>
 						{!isMobile ? (
 							<>
-								<ProfileButton isOpen={isOpen} setIsOpen={setIsOpen} />
+								<ProfileButton
+									isOpen={isOpen}
+									setIsOpen={setIsOpen}
+									user={user}
+								/>
 								<ProfileMenu
 									menuLinks={menuLinks}
 									isOpen={isOpen}
 									setIsOpen={setIsOpen}
 									pathname={pathname}
+									user={user}
 								/>
 							</>
 						) : (

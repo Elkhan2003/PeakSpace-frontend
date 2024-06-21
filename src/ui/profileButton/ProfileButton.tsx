@@ -6,9 +6,10 @@ import { Avatar } from 'antd';
 interface ProfileButtonProps {
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
+	user: User | null;
 }
 
-const ProfileButton: FC<ProfileButtonProps> = ({ isOpen, setIsOpen }) => {
+const ProfileButton: FC<ProfileButtonProps> = ({ isOpen, setIsOpen, user }) => {
 	return (
 		<>
 			<button
@@ -18,16 +19,8 @@ const ProfileButton: FC<ProfileButtonProps> = ({ isOpen, setIsOpen }) => {
 					setIsOpen(!isOpen);
 				}}
 			>
-				<Avatar
-					size={38}
-					icon={
-						<img
-							src="https://elcho.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felcho911.eabc74a3.png&w=640&q=75"
-							alt="avatar"
-						/>
-					}
-				/>
-				<p className={scss.name}>Elcho911</p>
+				<Avatar size={38} icon={<img src={user?.avatar} alt="avatar" />} />
+				<p className={scss.name}>{user?.userName}</p>
 				<IconChevronUp
 					className={isOpen ? `${scss.arrow} ${scss.active}` : `${scss.arrow}`}
 					stroke={2.5}
