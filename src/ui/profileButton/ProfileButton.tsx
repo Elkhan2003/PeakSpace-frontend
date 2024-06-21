@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import scss from './ProfileButton.module.scss';
 import { IconChevronUp } from '@tabler/icons-react';
 import { Avatar } from 'antd';
@@ -29,4 +29,4 @@ const ProfileButton: FC<ProfileButtonProps> = ({ isOpen, setIsOpen, user }) => {
 		</>
 	);
 };
-export default ProfileButton;
+export default memo(ProfileButton);
