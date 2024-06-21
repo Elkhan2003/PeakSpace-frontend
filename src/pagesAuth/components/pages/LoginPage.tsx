@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import scss from './LoginPage.module.scss';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -15,34 +14,22 @@ interface IFormInput {
 const LoginPage = () => {
 	const [postLoginMutation] = usePostLoginMutation();
 	const { control, handleSubmit } = useForm<IFormInput>();
-	const [attempt, setAttempt] = useState(0);
 	const [rememberMe, setRememberMe] = useState(false);
-	const maxAttempts = 3;
 
 	const handleRememberMeChange = (e: CheckboxChangeEvent) => {
 		setRememberMe(e.target.checked);
 	};
 
-	const handleResponse = (response: any, userData: IFormInput) => {
-		if (response.data?.accessToken) {
-			const storage = rememberMe ? localStorage : sessionStorage;
-			storage.setItem('accessToken', JSON.stringify(response.data.accessToken));
-			window.location.reload();
-		} else {
-			setAttempt(attempt + 1);
-			onSubmit(userData);
-		}
-	};
-
 	const onSubmit: SubmitHandler<IFormInput> = async (userData) => {
-		if (attempt >= maxAttempts) {
-			console.error('Maximum attempts reached');
-			return;
-		}
-
 		try {
 			const response = await postLoginMutation(userData);
-			handleResponse(response, userData);
+			if (response.data?.token) {
+				const storage = rememberMe ? localStorage : sessionStorage;
+				storage.setItem('accessToken', JSON.stringify(response.data.token));
+				window.location.reload();
+			} else {
+				console.error('Invalid token');
+			}
 		} catch (e) {
 			console.error('An error occurred:', e);
 		}

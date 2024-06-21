@@ -12,6 +12,7 @@ import LoginPage from '@/src/pagesAuth/components/pages/LoginPage.tsx';
 import RegistrationPage from '@/src/pagesAuth/components/pages/RegistrationPage.tsx';
 import ForgotPage from '@/src/pagesAuth/components/pages/ForgotPage.tsx';
 import { SessionProvider } from '@/src/providers/SessionProvider.tsx';
+import ConfirmEmailPage from '@/src/pagesAuth/components/pages/ConfirmEmailPage.tsx';
 
 export const router = createBrowserRouter([
 	{
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
 			{
 				path: '/auth/registration',
 				element: <RegistrationPage />
+			},
+			{
+				path: '/auth/confirm',
+				element: <ConfirmEmailPage />
 			},
 			{
 				path: '/auth/forgot',

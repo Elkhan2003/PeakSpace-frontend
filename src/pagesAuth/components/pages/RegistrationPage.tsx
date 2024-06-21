@@ -120,31 +120,13 @@ const RegistrationPage = () => {
 		watch,
 		formState: { errors }
 	} = useForm<IFormInput>();
-	const [attempt, setAttempt] = useState(0);
 	const [rememberMe, setRememberMe] = useState(false);
-	const maxAttempts = 3;
 
 	const handleRememberMeChange = (e: CheckboxChangeEvent) => {
 		setRememberMe(e.target.checked);
 	};
 
-	const handleResponse = (response: any, userData: IFormInput) => {
-		if (response.data?.accessToken) {
-			const storage = rememberMe ? localStorage : sessionStorage;
-			storage.setItem('accessToken', JSON.stringify(response.data.accessToken));
-			window.location.reload();
-		} else {
-			setAttempt(attempt + 1);
-			onSubmit(userData);
-		}
-	};
-
 	const onSubmit: SubmitHandler<IFormInput> = async (userData) => {
-		if (attempt >= maxAttempts) {
-			console.error('Maximum attempts reached');
-			return;
-		}
-
 		const userDataRest = {
 			lastName: userData.lastName,
 			firstName: userData.firstName,
@@ -155,7 +137,13 @@ const RegistrationPage = () => {
 
 		try {
 			const response = await postRegisterMutation(userDataRest);
-			handleResponse(response, userData);
+			if (response.data?.message) {
+				const storage = rememberMe ? localStorage : sessionStorage;
+				storage.setItem('accessToken', JSON.stringify(response.data.message));
+				window.location.reload();
+			} else {
+				console.error('Invalid token');
+			}
 		} catch (e) {
 			console.error('An error occurred:', e);
 		}

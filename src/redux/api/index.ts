@@ -5,7 +5,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-	baseUrl: `${import.meta.env.VITE_PUBLIC_API_URL}/api/v1`,
+	baseUrl: `${import.meta.env.VITE_PUBLIC_API_URL}`,
 	prepareHeaders: (headers) => {
 		let token = JSON.parse(String(localStorage.getItem('accessToken')));
 		if (!token) {
@@ -15,8 +15,8 @@ const baseQuery = fetchBaseQuery({
 			headers.set('Authorization', `Bearer ${token}`);
 		}
 		return headers;
-	},
-	credentials: 'include'
+	}
+	// credentials: 'include'
 });
 
 const baseQueryExtended: BaseQueryFn = async (args, api, extraOptions) => {
