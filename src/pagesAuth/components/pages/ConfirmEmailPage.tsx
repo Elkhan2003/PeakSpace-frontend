@@ -1,15 +1,9 @@
 import scss from './ConfirmEmailPage.module.scss';
-import logo from '@/src/assets/logo.png';
 import { GetProp, Input } from 'antd';
-import { OTPProps } from 'antd/es/input/OTP';
 
 const ConfirmEmailPage = () => {
-	const onChange: GetProp<typeof Input.OTP, 'onChange'> = (text) => {
-		console.log('onChange:', text);
-	};
-
-	const sharedProps: OTPProps = {
-		onChange
+	const onChange: GetProp<typeof Input.OTP, 'onChange'> = (code) => {
+		console.log('onChange:', code);
 	};
 
 	return (
@@ -17,11 +11,20 @@ const ConfirmEmailPage = () => {
 			<section className={scss.ConfirmEmailPage}>
 				<div className={scss.container}>
 					<div className={scss.content}>
-						<img className={scss.logo} src={logo} alt="logo" />
-						<Input.OTP
-							formatter={(str) => str.toUpperCase()}
-							{...sharedProps}
-						/>
+						<div className={scss.texts}>
+							<h1>Код подтверждения</h1>
+							<p>Мы отправили вам SMS-код на адрес:</p>
+							<p>boss.amsport@gmail.com</p>
+						</div>
+						<div className={scss.pin_input}>
+							<Input.OTP
+								size="large"
+								length={4}
+								formatter={(str) => str.replace(/\D/g, '')}
+								onChange={onChange}
+							/>
+						</div>
+						<button>Вернуться на страницу регистрации</button>
 					</div>
 				</div>
 			</section>

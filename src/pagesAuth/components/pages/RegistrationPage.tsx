@@ -141,8 +141,6 @@ const RegistrationPage = () => {
 				const storage = rememberMe ? localStorage : sessionStorage;
 				storage.setItem('accessToken', JSON.stringify(response.data.message));
 				window.location.reload();
-			} else {
-				console.error('Invalid token');
 			}
 		} catch (e) {
 			console.error('An error occurred:', e);
