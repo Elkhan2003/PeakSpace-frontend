@@ -6,6 +6,14 @@ import { siteLinks } from '@/src/routes/links.tsx';
 
 const SideBar: FC = () => {
 	const { pathname } = useLocation();
+
+	const isActive = (href: string) => {
+		if (href === '/') {
+			return pathname === href;
+		}
+		return pathname.startsWith(href);
+	};
+
 	return (
 		<>
 			<div className={scss.SideBar}>
@@ -15,12 +23,14 @@ const SideBar: FC = () => {
 							<li key={index}>
 								<Link className={scss.link} to={item.href}>
 									{item.icon} {item.name}
-									{pathname === item.href && (
-										<motion.div
-											layoutId="active-pill"
-											className={scss.active}
-											transition={{ type: 'spring', duration: 0.6 }}
-										/>
+									{isActive(item.href) && (
+										<>
+											<motion.div
+												layoutId="active-pill"
+												className={scss.active}
+												transition={{ type: 'spring', duration: 0.6 }}
+											/>
+										</>
 									)}
 								</Link>
 							</li>

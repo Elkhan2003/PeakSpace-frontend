@@ -64,3 +64,14 @@ body {
 	--border-radius: 4px;
 	--transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
+
+.react-input-emoji--button {
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	svg {
+		display: flex !important;
+		justify-content: center !important;
+		align-items: center !important;
+	}
+}

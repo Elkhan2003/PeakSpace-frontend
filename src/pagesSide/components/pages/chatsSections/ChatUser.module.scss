@@ -1,0 +1,17 @@
+.ChatUser {
+	width: 100%;
+	.content {
+		display: flex;
+		flex-direction: column;
+		.user {
+			display: flex;
+			padding: 10px;
+
+			background: var(--white);
+			border-radius: 0px 0px 4px 4px;
+			border-left: 1px solid #e7e8ec;
+			border-right: 1px solid #e7e8ec;
+			border-bottom: 1px solid #e7e8ec;
+		}
+	}
+}

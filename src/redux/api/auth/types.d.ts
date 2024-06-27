@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 namespace AUTH {
 	type GetMeResponse = User;
 	type GetMeRequest = void;

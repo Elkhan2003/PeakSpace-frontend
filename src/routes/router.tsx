@@ -13,6 +13,7 @@ import RegistrationPage from '@/src/pagesAuth/components/pages/RegistrationPage.
 import ForgotPage from '@/src/pagesAuth/components/pages/ForgotPage.tsx';
 import { SessionProvider } from '@/src/providers/SessionProvider.tsx';
 import ConfirmEmailPage from '@/src/pagesAuth/components/pages/ConfirmEmailPage.tsx';
+import ChatUser from '@/src/pagesSide/components/pages/chatsSections/ChatUser.tsx';
 
 export const router = createBrowserRouter([
 	{
@@ -30,7 +31,13 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: '/chats',
-				element: <ChatsPage />
+				element: <ChatsPage />,
+				children: [
+					{
+						path: '/chats:userName',
+						element: <ChatUser />
+					}
+				]
 			},
 			{
 				path: '/notifications',

@@ -8,7 +8,6 @@ import { useGetMeQuery } from '@/src/redux/api/auth';
 
 const LayoutSide = () => {
 	const { data } = useGetMeQuery();
-	console.log(data);
 	const [isOpen, setIsOpen] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 
