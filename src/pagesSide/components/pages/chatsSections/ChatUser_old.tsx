@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import scss from './ChatUser.module.scss';
 import { useParams } from 'react-router-dom';
 import { ScrollArea } from '@mantine/core';
 import { useGetChatUserQuery } from '@/src/redux/api/chat';
 import { useGetMeQuery } from '@/src/redux/api/auth';
+import InputEmoji from 'react-input-emoji';
+import { IconPhone } from '@tabler/icons-react';
 
 interface Message {
 	event: string;
@@ -18,60 +20,110 @@ const ChatUser = () => {
 	const { userName } = useParams<{ userName: string }>();
 	const socket = useRef<WebSocket | null>(null);
 	const [room, setRoom] = useState('');
+	const [messages, setMessages] = useState<Message[]>([]);
+	const [text, setText] = useState<string>('');
+
+	const filteredUserName = useMemo(
+		() => userChatData.find((item) => item.userName === userName),
+		[userChatData, userName]
+	);
+
+	const setChatRoom = useCallback(
+		(userData: any, userName: any, userChatData: any) => {
+			const filteredUser = userChatData.find(
+				(item: any) => item.userName === userName
+			);
+			if (filteredUser) {
+				const emails = [filteredUser.email, userData.email].sort();
+				setRoom(`${emails[0]}+${emails[1]}`);
+			}
+		},
+		[]
+	);
 
 	useEffect(() => {
 		if (userData && userName && userChatData.length) {
-			const filteredUser = userChatData.find(
-				(item) => item.userName === userName
-			);
-			if (filteredUser) {
-				setRoom(`${filteredUser.email}+${userData.email}`);
-			}
+			setChatRoom(userData, userName, userChatData);
 		}
-	}, [userData, userName, userChatData]);
+	}, [userData, userName, userChatData, setChatRoom]);
 
-	useEffect(() => {
-		if (room) {
-			socket.current = new WebSocket(import.meta.env.VITE_PUBLIC_API_WSS);
-			socket.current.onopen = () => {
-				console.log('WebSocket connection open');
-				const message = {
-					event: 'getChatMessage',
-					room
-				};
-				socket.current?.send(JSON.stringify(message));
-			};
-			socket.current.onmessage = (event) => {
-				console.log('Получаю сообщения комнаты...');
-				const message: Message = JSON.parse(event.data);
-				console.log(message);
-			};
-			socket.current.onclose = () => {
-				console.log('WebSocket closed');
-			};
-			socket.current.onerror = () => {
-				console.log('WebSocket error');
-			};
-		}
+	const initWebSocket = useCallback(() => {
+		if (!room) return;
+
+		socket.current = new WebSocket(import.meta.env.VITE_PUBLIC_API_WSS);
+
+		socket.current.onopen = () => {
+			console.log('WebSocket connection open');
+			sendWebSocketMessage({ event: 'getChatMessage', room });
+		};
+
+		socket.current.onmessage = (event: MessageEvent) => {
+			console.log('Получаю сообщения комнаты...');
+			const { messages }: { messages: Message[] } = JSON.parse(event.data);
+			setMessages(messages);
+		};
+
+		socket.current.onclose = () => {
+			console.log('WebSocket closed');
+		};
+
+		socket.current.onerror = () => {
+			console.log('WebSocket error');
+		};
 
 		return () => {
 			socket.current?.close();
 		};
 	}, [room]);
 
+	useEffect(() => {
+		initWebSocket();
+	}, [initWebSocket]);
+
+	const sendWebSocketMessage = (message: Message) => {
+		socket.current?.send(JSON.stringify(message));
+	};
+
+	const handleOnEnter = (message: string) => {
+		sendWebSocketMessage({
+			event: 'sendChatMessage',
+			message,
+			username: userData?.userName,
+			room
+		});
+		setText('');
+	};
+
 	return (
 		<div className={scss.ChatUser}>
 			<div className={scss.container}>
 				<div className={scss.content}>
-					<h3 className={scss.user}>{userName}</h3>
-					<ScrollArea h={'82.3vh'}>
+					<div className={scss.user}>
+						<h3>
+							{filteredUserName?.firstName} {filteredUserName?.lastName}
+						</h3>
+						<div className={scss.buttons}>
+							<button>
+								<IconPhone stroke={2} />
+							</button>
+							<button></button>
+						</div>
+					</div>
+					<ScrollArea h={'80.8vh'}>
 						<div className={scss.chat}>
-							{Array.from({ length: 50 }).map((_, index) => (
-								<p key={index}>awdawd</p>
+							{messages.map((msg, index) => (
+								<p key={index}>{msg.message}</p>
 							))}
 						</div>
 					</ScrollArea>
-					<input type="text" />
+					{/*// @ts-ignore*/}
+					<InputEmoji
+						value={text}
+						onChange={setText}
+						cleanOnEnter
+						onEnter={handleOnEnter}
+						placeholder="Type a message"
+					/>
 				</div>
 			</div>
 		</div>
