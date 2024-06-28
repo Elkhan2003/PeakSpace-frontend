@@ -119,20 +119,11 @@ const RegistrationPage = () => {
 	} = useForm<IFormInput>();
 
 	const onSubmit: SubmitHandler<IFormInput> = async (userData) => {
-		const userDataRest = {
-			lastName: userData.lastName,
-			firstName: userData.firstName,
-			userName: userData.userName,
-			email: userData.email,
-			password: userData.password
-		};
-
 		try {
-			const response = await postRegisterMutation(userDataRest);
+			const response = await postRegisterMutation(userData);
 			if (response.data?.userId) {
 				localStorage.setItem('userId', JSON.stringify(response.data.userId));
 				localStorage.setItem('email', JSON.stringify(userData.email));
-				// window.location.reload();
 				navigate('/auth/confirm');
 			}
 		} catch (e) {
@@ -158,9 +149,6 @@ const RegistrationPage = () => {
 						<Link to="/auth/login" className={scss.link}>
 							Уже есть аккаунт?
 						</Link>
-						{/*<Link to="/auth/forgot" className={scss.link}>*/}
-						{/*	Забыли пароль?*/}
-						{/*</Link>*/}
 					</div>
 				</div>
 			</div>

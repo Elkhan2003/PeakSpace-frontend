@@ -1,9 +1,9 @@
-import scss from './ConfirmEmailPage.module.scss';
-import { Checkbox, GetProp, Input } from 'antd';
 import { useEffect, useState } from 'react';
-import { usePostConfirmEmailMutation } from '@/src/redux/api/auth';
-import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import scss from './ConfirmEmailPage.module.scss';
 import { Link } from 'react-router-dom';
+import { Checkbox, Input } from 'antd';
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { usePostConfirmEmailMutation } from '@/src/redux/api/auth';
 
 const ConfirmEmailPage = () => {
 	const [postConfirmEmailMutation] = usePostConfirmEmailMutation();
@@ -11,12 +11,16 @@ const ConfirmEmailPage = () => {
 	const [userEmail, setUserEmail] = useState<string>('');
 	const [rememberMe, setRememberMe] = useState(false);
 
+	useEffect(() => {
+		setUserId(Number(localStorage.getItem('userId')));
+		setUserEmail(String(localStorage.getItem('email')));
+	}, []);
+
 	const handleRememberMeChange = (e: CheckboxChangeEvent) => {
 		setRememberMe(e.target.checked);
 	};
 
-	const onChange: GetProp<typeof Input.OTP, 'onChange'> = async (code) => {
-		console.log('onChange:', code);
+	const onChange = async (code: string) => {
 		const response = await postConfirmEmailMutation({
 			codeInEmail: Number(code),
 			id: userId!
@@ -29,40 +33,34 @@ const ConfirmEmailPage = () => {
 		}
 	};
 
-	useEffect(() => {
-		setUserId(Number(localStorage.getItem('userId')));
-		setUserEmail(String(localStorage.getItem('email')));
-	}, []);
-
 	return (
-		<>
-			<section className={scss.ConfirmEmailPage}>
-				<div className={scss.container}>
-					<div className={scss.content}>
-						<div className={scss.texts}>
-							<h1>Код подтверждения</h1>
-							<p>Мы отправили вам SMS-код на адрес:</p>
-							<p>{userEmail}</p>
-						</div>
-						<div className={scss.pin_input}>
-							<Input.OTP
-								size="large"
-								length={4}
-								formatter={(str) => str.replace(/\D/g, '')}
-								onChange={onChange}
-							/>
-						</div>
-						<Checkbox
-							className={scss.customCheckbox}
-							onChange={handleRememberMeChange}
-						>
-							Сохранить вход
-						</Checkbox>
-						<Link to="/auth/login">Вернуться на страницу регистрации</Link>
+		<section className={scss.ConfirmEmailPage}>
+			<div className={scss.container}>
+				<div className={scss.content}>
+					<div className={scss.texts}>
+						<h1>Код подтверждения</h1>
+						<p>Мы отправили вам SMS-код на адрес:</p>
+						<p>{userEmail}</p>
 					</div>
+					<div className={scss.pin_input}>
+						<Input.OTP
+							size="large"
+							length={4}
+							formatter={(str) => str.replace(/\D/g, '')}
+							onChange={onChange}
+						/>
+					</div>
+					<Checkbox
+						className={scss.customCheckbox}
+						onChange={handleRememberMeChange}
+					>
+						Сохранить вход
+					</Checkbox>
+					<Link to="/auth/login">Вернуться на страницу регистрации</Link>
 				</div>
-			</section>
-		</>
+			</div>
+		</section>
 	);
 };
+
 export default ConfirmEmailPage;

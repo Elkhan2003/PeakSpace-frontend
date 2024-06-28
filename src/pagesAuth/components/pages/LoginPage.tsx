@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import scss from './LoginPage.module.scss';
+import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { usePostLoginMutation } from '@/src/redux/api/auth';
-import logo from '@/src/assets/logo.png';
 import { Button, Checkbox, Input } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { Link } from 'react-router-dom';
+import { usePostLoginMutation } from '@/src/redux/api/auth';
+import logo from '@/src/assets/logo.png';
 
 interface IFormInput {
 	email: string;
