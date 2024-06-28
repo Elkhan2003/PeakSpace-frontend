@@ -11,6 +11,7 @@ interface Message {
 	event: string;
 	message?: string;
 	username?: string;
+	email?: string;
 	room: string;
 }
 
@@ -118,7 +119,7 @@ const ChatUser = () => {
 							{messages.map((msg, index) => (
 								<p
 									className={
-										msg.username === userData?.userName
+										msg.email === userData?.email
 											? scss.myMessage
 											: scss.otherMessage
 									}
