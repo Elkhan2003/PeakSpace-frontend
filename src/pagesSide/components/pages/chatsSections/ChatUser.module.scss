@@ -29,5 +29,24 @@
 				}
 			}
 		}
+		.chat {
+			display: flex;
+			flex-direction: column;
+			.myMessage {
+				align-self: flex-end;
+				background-color: #daf8cb;
+				padding: 10px;
+				border-radius: 10px;
+				margin: 5px;
+			}
+
+			.otherMessage {
+				align-self: flex-start;
+				background-color: var(--white);
+				padding: 10px;
+				border-radius: 10px;
+				margin: 5px;
+			}
+		}
 	}
 }

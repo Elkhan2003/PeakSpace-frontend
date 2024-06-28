@@ -22,6 +22,7 @@ const ChatUser = () => {
 	const [room, setRoom] = useState('');
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [text, setText] = useState<string>('');
+	const chatEndRef = useRef<HTMLDivElement>(null); // ref для конца чата
 
 	const filteredUserName = useMemo(
 		() => userChatData.find((item) => item.userName === userName),
@@ -94,6 +95,10 @@ const ChatUser = () => {
 		setText('');
 	};
 
+	useEffect(() => {
+		chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}, [messages]);
+
 	return (
 		<div className={scss.ChatUser}>
 			<div className={scss.container}>
@@ -112,8 +117,18 @@ const ChatUser = () => {
 					<ScrollArea h={'80.8vh'}>
 						<div className={scss.chat}>
 							{messages.map((msg, index) => (
-								<p key={index}>{msg.message}</p>
+								<p
+									className={
+										msg.username === userData?.userName
+											? scss.myMessage
+											: scss.otherMessage
+									}
+									key={index}
+								>
+									{msg.message}
+								</p>
 							))}
+							<div ref={chatEndRef} />
 						</div>
 					</ScrollArea>
 					{/*// @ts-ignore*/}
