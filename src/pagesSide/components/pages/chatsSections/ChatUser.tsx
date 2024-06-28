@@ -52,29 +52,30 @@ const ChatUser = () => {
 	const initWebSocket = useCallback(() => {
 		if (!room) return;
 
-		socket.current = new WebSocket(import.meta.env.VITE_PUBLIC_API_WSS);
+		const ws = new WebSocket(import.meta.env.VITE_PUBLIC_API_WSS);
+		socket.current = ws;
 
-		socket.current.onopen = () => {
+		ws.onopen = () => {
 			console.log('WebSocket connection open');
 			sendWebSocketMessage({ event: 'getChatMessage', room });
 		};
 
-		socket.current.onmessage = (event: MessageEvent) => {
+		ws.onmessage = (event: MessageEvent) => {
 			console.log('Получаю сообщения комнаты...');
 			const { messages }: { messages: Message[] } = JSON.parse(event.data);
 			setMessages(messages);
 		};
 
-		socket.current.onclose = () => {
+		ws.onclose = () => {
 			console.log('WebSocket closed');
 		};
 
-		socket.current.onerror = () => {
+		ws.onerror = () => {
 			console.log('WebSocket error');
 		};
 
 		return () => {
-			socket.current?.close();
+			ws.close();
 		};
 	}, [room]);
 
