@@ -36,12 +36,23 @@ const api = index.injectEndpoints({
 				}),
 				invalidatesTags: ['auth']
 			}
-		)
+		),
+		postConfirmEmail: build.mutation<
+			AUTH.PostConformEmailResponse,
+			AUTH.PostConformEmailRequest
+		>({
+			query: ({ codeInEmail, id }) => ({
+				url: `/auth/confirmCodeByEmail?codeInEmail=${codeInEmail}&id=${id}`,
+				method: 'POST'
+			}),
+			invalidatesTags: ['auth']
+		})
 	})
 });
 export const {
 	useGetMeQuery,
 	usePostLoginMutation,
 	usePostRegistrationMutation,
-	usePostLogoutMutation
+	usePostLogoutMutation,
+	usePostConfirmEmailMutation
 } = api;

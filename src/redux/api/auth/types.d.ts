@@ -27,4 +27,13 @@ namespace AUTH {
 		message: string;
 	};
 	type PostLogoutRequest = void;
+
+	type PostConformEmailResponse = {
+		id: number;
+		token: string;
+	};
+	type PostConformEmailRequest = {
+		codeInEmail: number;
+		id: number;
+	};
 }

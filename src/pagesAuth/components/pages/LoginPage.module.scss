@@ -29,5 +29,22 @@
 				margin-right: auto;
 			}
 		}
+		.links {
+			margin-top: 20px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 10px;
+
+			.link {
+				color: #1890ff;
+				text-decoration: none;
+				font-size: 14px;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
 	}
 }

@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import scss from './RegistrationPage.module.scss';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { usePostRegistrationMutation } from '@/src/redux/api/auth';
-import { Button, Checkbox, Input } from 'antd';
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { Button, Input } from 'antd';
 import logo from '@/src/assets/logo.png';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface IFormInput {
 	lastName: string;
@@ -54,7 +53,6 @@ const RegistrationForm = ({
 	control,
 	errors,
 	password,
-	handleRememberMeChange,
 	onSubmit
 }: any) => (
 	<form onSubmit={handleSubmit(onSubmit)}>
@@ -104,9 +102,6 @@ const RegistrationForm = ({
 			placeholder="Повторите пароль"
 			errors={errors}
 		/>
-		<Checkbox className={scss.customCheckbox} onChange={handleRememberMeChange}>
-			Сохранить вход
-		</Checkbox>
 		<Button type="primary" size="large" block htmlType="submit">
 			Зарегистрироваться
 		</Button>
@@ -115,17 +110,13 @@ const RegistrationForm = ({
 
 const RegistrationPage = () => {
 	const [postRegisterMutation] = usePostRegistrationMutation();
+	const navigate = useNavigate();
 	const {
 		control,
 		handleSubmit,
 		watch,
 		formState: { errors }
 	} = useForm<IFormInput>();
-	const [rememberMe, setRememberMe] = useState(false);
-
-	const handleRememberMeChange = (e: CheckboxChangeEvent) => {
-		setRememberMe(e.target.checked);
-	};
 
 	const onSubmit: SubmitHandler<IFormInput> = async (userData) => {
 		const userDataRest = {
@@ -138,10 +129,11 @@ const RegistrationPage = () => {
 
 		try {
 			const response = await postRegisterMutation(userDataRest);
-			if (response.data?.message) {
-				const storage = rememberMe ? localStorage : sessionStorage;
-				storage.setItem('accessToken', JSON.stringify(response.data.message));
-				window.location.reload();
+			if (response.data?.userId) {
+				localStorage.setItem('userId', JSON.stringify(response.data.userId));
+				localStorage.setItem('email', JSON.stringify(userData.email));
+				// window.location.reload();
+				navigate('/auth/confirm');
 			}
 		} catch (e) {
 			console.error('An error occurred:', e);
@@ -160,9 +152,16 @@ const RegistrationPage = () => {
 						control={control}
 						errors={errors}
 						password={password}
-						handleRememberMeChange={handleRememberMeChange}
 						onSubmit={onSubmit}
 					/>
+					<div className={scss.links}>
+						<Link to="/auth/login" className={scss.link}>
+							Уже есть аккаунт?
+						</Link>
+						{/*<Link to="/auth/forgot" className={scss.link}>*/}
+						{/*	Забыли пароль?*/}
+						{/*</Link>*/}
+					</div>
 				</div>
 			</div>
 		</section>

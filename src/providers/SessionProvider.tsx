@@ -15,11 +15,20 @@ export const SessionProvider: FC<ProtectedRouteProps> = ({ children }) => {
 		switch (pathname) {
 			case '/auth/login':
 			case '/auth/registration':
+			case '/auth/confirm':
+			case '/auth/forgot':
 				if (status === 'fulfilled') {
 					navigate('/');
 				}
 				break;
 			case '/':
+			case '/chats':
+			case '/chats:userName':
+			case '/notifications':
+			case '/settings':
+			case '/my-profile':
+			case '/my-public':
+			case '/call':
 				if (status === 'rejected') {
 					navigate('/auth/login');
 				}

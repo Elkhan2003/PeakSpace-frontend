@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import scss from './ChatUser.module.scss';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ScrollArea } from '@mantine/core';
 import { useGetChatUserQuery } from '@/src/redux/api/chat';
 import { useGetMeQuery } from '@/src/redux/api/auth';
@@ -108,10 +108,9 @@ const ChatUser = () => {
 							{filteredUserName?.firstName} {filteredUserName?.lastName}
 						</h3>
 						<div className={scss.buttons}>
-							<button>
+							<Link to="/call">
 								<IconPhone stroke={2} />
-							</button>
-							<button></button>
+							</Link>
 						</div>
 					</div>
 					<ScrollArea h={'80.8vh'}>

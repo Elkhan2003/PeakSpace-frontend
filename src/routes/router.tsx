@@ -14,6 +14,7 @@ import ForgotPage from '@/src/pagesAuth/components/pages/ForgotPage.tsx';
 import { SessionProvider } from '@/src/providers/SessionProvider.tsx';
 import ConfirmEmailPage from '@/src/pagesAuth/components/pages/ConfirmEmailPage.tsx';
 import ChatUser from '@/src/pagesSide/components/pages/chatsSections/ChatUser.tsx';
+import CallPage from '@/src/pagesSide/components/pages/CallPage.tsx';
 
 export const router = createBrowserRouter([
 	{
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
 				element: <MyPublicPage />
 			}
 		]
+	},
+	{
+		path: '/call',
+		element: <CallPage />
 	},
 	{
 		path: '/auth',
