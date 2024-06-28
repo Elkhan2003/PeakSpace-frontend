@@ -91,6 +91,7 @@ const ChatUser = () => {
 			event: 'sendChatMessage',
 			message,
 			username: userData?.userName,
+			email: userData?.email,
 			room
 		});
 		setText('');
