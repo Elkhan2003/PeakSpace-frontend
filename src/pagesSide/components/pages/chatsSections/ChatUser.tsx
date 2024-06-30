@@ -13,6 +13,7 @@ interface Message {
 	username?: string;
 	email?: string;
 	room: string;
+	targetEmail?: string;
 }
 
 const ChatUser = () => {
@@ -22,6 +23,7 @@ const ChatUser = () => {
 	const socket = useRef<WebSocket | null>(null);
 	const [isConnected, setIsConnected] = useState<boolean>(false);
 	const [messages, setMessages] = useState<Message[]>([]);
+
 	const [text, setText] = useState<string>('');
 	const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +40,17 @@ const ChatUser = () => {
 		};
 		socket.current.onmessage = (event: MessageEvent) => {
 			const { messages }: { messages: Message[] } = JSON.parse(event.data);
-			setMessages(messages);
+
+			if (filteredUserName?.email && userData?.email) {
+				const newRoom = `${filteredUserName.email}+${userData.email}`
+					.split('+')
+					.sort()
+					.join('+');
+				const filteredMessages: Message[] = messages.filter(
+					(item) => item.room === newRoom
+				);
+				setMessages(filteredMessages);
+			}
 		};
 		socket.current.onclose = () => {
 			console.log('WebSocket connection closed');
@@ -46,7 +58,7 @@ const ChatUser = () => {
 		};
 		socket.current.onerror = (error) =>
 			console.error('WebSocket error:', error);
-	}, []);
+	}, [userChatData]);
 
 	useEffect(() => {
 		initWebSocket();
@@ -55,7 +67,10 @@ const ChatUser = () => {
 
 	useEffect(() => {
 		if (isConnected && filteredUserName?.email && userData?.email) {
-			const newRoom = `${filteredUserName.email}+${userData.email}`;
+			const newRoom = `${filteredUserName.email}+${userData.email}`
+				.split('+')
+				.sort()
+				.join('+');
 			sendWebSocketMessage({ event: 'getChatMessage', room: newRoom });
 		}
 	}, [isConnected, filteredUserName, userData]);
@@ -78,6 +93,10 @@ const ChatUser = () => {
 			username: userData?.userName,
 			email: userData?.email,
 			room: `${filteredUserName?.email}+${userData?.email}`
+				.split('+')
+				.sort()
+				.join('+'),
+			targetEmail: filteredUserName?.email
 		});
 		setText('');
 	};
