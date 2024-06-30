@@ -59,7 +59,6 @@ const ChatUser = () => {
 			const newRoom = `${filteredUserName.email}+${userData.email}`;
 			setRoom(newRoom);
 			sendWebSocketMessage({ event: 'getChatMessage', room: newRoom });
-			console.log(newRoom);
 		}
 	}, [isConnected, filteredUserName, userData]);
 
