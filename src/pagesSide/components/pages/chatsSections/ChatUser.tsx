@@ -54,7 +54,18 @@ const ChatUser = () => {
 		if (socket.current) {
 			socket.current.onmessage = (event: MessageEvent) => {
 				const { messages }: { messages: Message[] } = JSON.parse(event.data);
-				setMessages(messages);
+				if (filteredUserName?.email && userData?.email) {
+					const newRoom = `${filteredUserName.email}+${userData.email}`
+						.split('+')
+						.sort()
+						.join('+');
+					const filteredMessages = messages.find(
+						(item) => item.room === newRoom
+					);
+					if (filteredMessages?.room === newRoom) {
+						setMessages(messages);
+					}
+				}
 			};
 		}
 		if (isConnected && filteredUserName?.email && userData?.email) {
