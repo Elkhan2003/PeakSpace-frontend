@@ -13,7 +13,6 @@ interface Message {
 	username?: string;
 	email?: string;
 	room: string;
-	targetEmail?: string;
 }
 
 const ChatUser = () => {
@@ -95,8 +94,7 @@ const ChatUser = () => {
 			room: `${filteredUserName?.email}+${userData?.email}`
 				.split('+')
 				.sort()
-				.join('+'),
-			targetEmail: filteredUserName?.email
+				.join('+')
 		});
 		setText('');
 	};
