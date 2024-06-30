@@ -53,7 +53,6 @@ const ChatUser = () => {
 	useEffect(() => {
 		socket.current!.onmessage = (event: MessageEvent) => {
 			const { messages }: { messages: Message[] } = JSON.parse(event.data);
-
 			if (filteredUserName?.email && userData?.email) {
 				const newRoom = `${filteredUserName.email}+${userData.email}`
 					.split('+')
@@ -62,10 +61,11 @@ const ChatUser = () => {
 				const filteredMessages: Message[] = messages.filter(
 					(item) => item.room === newRoom
 				);
-				setMessages(filteredMessages);
+				if (filteredMessages.length) {
+					setMessages(filteredMessages);
+				}
 			}
 		};
-
 		if (isConnected && filteredUserName?.email && userData?.email) {
 			const newRoom = `${filteredUserName.email}+${userData.email}`
 				.split('+')
