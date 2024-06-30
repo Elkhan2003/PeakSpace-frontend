@@ -20,71 +20,51 @@ const ChatUser = () => {
 	const { data: userChatData = [] } = useGetChatUserQuery();
 	const { userName } = useParams<{ userName: string }>();
 	const socket = useRef<WebSocket | null>(null);
-	const [room, setRoom] = useState('');
+	const [room, setRoom] = useState<string>(userName || '');
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [text, setText] = useState<string>('');
-	const chatEndRef = useRef<HTMLDivElement>(null); // ref для конца чата
+	const chatEndRef = useRef<HTMLDivElement>(null);
 
 	const filteredUserName = useMemo(
 		() => userChatData.find((item) => item.userName === userName),
 		[userChatData, userName]
 	);
 
-	const setChatRoom = useCallback(
-		(userData: any, userName: any, userChatData: any) => {
-			const filteredUser = userChatData.find(
-				(item: any) => item.userName === userName
-			);
-			if (filteredUser) {
-				const emails = [filteredUser.email, userData.email].sort();
-				setRoom(`${emails[0]}+${emails[1]}`);
-			}
-		},
-		[]
-	);
-
-	useEffect(() => {
-		if (userData && userName && userChatData.length) {
-			setChatRoom(userData, userName, userChatData);
-		}
-	}, [userData, userName, userChatData, setChatRoom]);
-
 	const initWebSocket = useCallback(() => {
-		if (!room) return;
-
-		const ws = new WebSocket(import.meta.env.VITE_PUBLIC_API_WSS);
-		socket.current = ws;
-
-		ws.onopen = () => {
-			console.log('WebSocket connection open');
-			sendWebSocketMessage({ event: 'getChatMessage', room });
-		};
-
-		ws.onmessage = (event: MessageEvent) => {
-			console.log('Получаю сообщения комнаты...');
+		socket.current = new WebSocket(import.meta.env.VITE_PUBLIC_API_WSS);
+		socket.current.onopen = () => console.log('WebSocket connection open');
+		socket.current.onmessage = (event: MessageEvent) => {
 			const { messages }: { messages: Message[] } = JSON.parse(event.data);
 			setMessages(messages);
 		};
-
-		ws.onclose = () => {
-			console.log('WebSocket closed');
-		};
-
-		ws.onerror = () => {
-			console.log('WebSocket error');
-		};
-
-		return () => {
-			ws.close();
-		};
-	}, [room]);
+		socket.current.onclose = () => console.log('WebSocket connection closed');
+		socket.current.onerror = (error) =>
+			console.error('WebSocket error:', error);
+	}, []);
 
 	useEffect(() => {
 		initWebSocket();
+		return () => socket.current?.close();
 	}, [initWebSocket]);
 
+	useEffect(() => {
+		if (filteredUserName?.email && userData?.email) {
+			const newRoom = `${filteredUserName.email}+${userData.email}`;
+			setRoom(newRoom);
+			sendWebSocketMessage({ event: 'getChatMessage', room: newRoom });
+			console.log(newRoom);
+		}
+	}, [filteredUserName, userData]);
+
 	const sendWebSocketMessage = (message: Message) => {
-		socket.current?.send(JSON.stringify(message));
+		if (socket.current?.readyState === WebSocket.OPEN) {
+			socket.current.send(JSON.stringify(message));
+		} else {
+			console.warn(
+				'WebSocket is not open. Ready state is:',
+				socket.current?.readyState
+			);
+		}
 	};
 
 	const handleOnEnter = (message: string) => {
@@ -133,13 +113,14 @@ const ChatUser = () => {
 							<div ref={chatEndRef} />
 						</div>
 					</ScrollArea>
-					{/*// @ts-ignore*/}
 					<InputEmoji
 						value={text}
 						onChange={setText}
 						cleanOnEnter
 						onEnter={handleOnEnter}
 						placeholder="Type a message"
+						shouldReturn={false}
+						shouldConvertEmojiToImage={false}
 					/>
 				</div>
 			</div>
