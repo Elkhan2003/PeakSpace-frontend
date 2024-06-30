@@ -17,12 +17,12 @@ const Chats = () => {
 							{userChatData.map((item) => (
 								<Link
 									className={
-										pathname === `/chats/${item.userName}`
+										pathname === `/chats/${item.email}`
 											? `${scss.user} ${scss.active}`
 											: `${scss.user}`
 									}
 									key={item.id}
-									to={`/chats/${item.userName}`}
+									to={`/chats/${item.email}`}
 								>
 									<Avatar
 										size={38}

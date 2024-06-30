@@ -18,17 +18,17 @@ interface Message {
 const ChatUser = () => {
 	const { data: userData } = useGetMeQuery();
 	const { data: userChatData = [] } = useGetChatUserQuery();
-	const { userName } = useParams<{ userName: string }>();
+	const { userEmail } = useParams<{ userEmail: string }>();
 	const socket = useRef<WebSocket | null>(null);
 	const [isConnected, setIsConnected] = useState<boolean>(false);
-	const [room, setRoom] = useState<string>(userName || '');
+	const [room, setRoom] = useState<string>(userEmail || '');
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [text, setText] = useState<string>('');
 	const chatEndRef = useRef<HTMLDivElement>(null);
 
 	const filteredUserName = useMemo(
-		() => userChatData.find((item) => item.userName === userName),
-		[userChatData, userName]
+		() => userChatData.find((item) => item.email === userEmail),
+		[userChatData, userEmail]
 	);
 
 	const initWebSocket = useCallback(() => {
