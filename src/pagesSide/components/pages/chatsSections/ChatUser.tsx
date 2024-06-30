@@ -20,6 +20,7 @@ const ChatUser = () => {
 	const { data: userChatData = [] } = useGetChatUserQuery();
 	const { userName } = useParams<{ userName: string }>();
 	const socket = useRef<WebSocket | null>(null);
+	const [isConnected, setIsConnected] = useState<boolean>(false);
 	const [room, setRoom] = useState<string>(userName || '');
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [text, setText] = useState<string>('');
@@ -32,12 +33,18 @@ const ChatUser = () => {
 
 	const initWebSocket = useCallback(() => {
 		socket.current = new WebSocket(import.meta.env.VITE_PUBLIC_API_WSS);
-		socket.current.onopen = () => console.log('WebSocket connection open');
+		socket.current.onopen = () => {
+			console.log('WebSocket connection open');
+			setIsConnected(true);
+		};
 		socket.current.onmessage = (event: MessageEvent) => {
 			const { messages }: { messages: Message[] } = JSON.parse(event.data);
 			setMessages(messages);
 		};
-		socket.current.onclose = () => console.log('WebSocket connection closed');
+		socket.current.onclose = () => {
+			console.log('WebSocket connection closed');
+			setIsConnected(false);
+		};
 		socket.current.onerror = (error) =>
 			console.error('WebSocket error:', error);
 	}, []);
@@ -48,13 +55,13 @@ const ChatUser = () => {
 	}, [initWebSocket]);
 
 	useEffect(() => {
-		if (filteredUserName?.email && userData?.email) {
+		if (isConnected && filteredUserName?.email && userData?.email) {
 			const newRoom = `${filteredUserName.email}+${userData.email}`;
 			setRoom(newRoom);
 			sendWebSocketMessage({ event: 'getChatMessage', room: newRoom });
 			console.log(newRoom);
 		}
-	}, [filteredUserName, userData]);
+	}, [isConnected, filteredUserName, userData]);
 
 	const sendWebSocketMessage = (message: Message) => {
 		if (socket.current?.readyState === WebSocket.OPEN) {
