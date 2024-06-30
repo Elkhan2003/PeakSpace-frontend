@@ -73,7 +73,7 @@ const ChatUser = () => {
 				.join('+');
 			sendWebSocketMessage({ event: 'getChatMessage', room: newRoom });
 		}
-	}, [isConnected, filteredUserName, userData]);
+	}, [isConnected, filteredUserName, userData, userEmail]);
 
 	const sendWebSocketMessage = (message: Message) => {
 		if (socket.current?.readyState === WebSocket.OPEN) {
