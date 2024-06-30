@@ -63,6 +63,8 @@ const ChatUser = () => {
 				);
 				if (filteredMessages.length) {
 					setMessages(filteredMessages);
+				} else {
+					setMessages(filteredMessages);
 				}
 			}
 		};
