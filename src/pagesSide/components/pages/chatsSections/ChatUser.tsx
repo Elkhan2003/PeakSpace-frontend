@@ -37,7 +37,21 @@ const ChatUser = () => {
 			console.log('WebSocket connection open');
 			setIsConnected(true);
 		};
-		socket.current.onmessage = (event: MessageEvent) => {
+		socket.current.onclose = () => {
+			console.log('WebSocket connection closed');
+			setIsConnected(false);
+		};
+		socket.current.onerror = (error) =>
+			console.error('WebSocket error:', error);
+	}, []);
+
+	useEffect(() => {
+		initWebSocket();
+		return () => socket.current?.close();
+	}, [initWebSocket]);
+
+	useEffect(() => {
+		socket.current!.onmessage = (event: MessageEvent) => {
 			const { messages }: { messages: Message[] } = JSON.parse(event.data);
 
 			if (filteredUserName?.email && userData?.email) {
@@ -51,20 +65,7 @@ const ChatUser = () => {
 				setMessages(filteredMessages);
 			}
 		};
-		socket.current.onclose = () => {
-			console.log('WebSocket connection closed');
-			setIsConnected(false);
-		};
-		socket.current.onerror = (error) =>
-			console.error('WebSocket error:', error);
-	}, [userChatData]);
 
-	useEffect(() => {
-		initWebSocket();
-		return () => socket.current?.close();
-	}, [initWebSocket]);
-
-	useEffect(() => {
 		if (isConnected && filteredUserName?.email && userData?.email) {
 			const newRoom = `${filteredUserName.email}+${userData.email}`
 				.split('+')
