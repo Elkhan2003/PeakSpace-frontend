@@ -79,7 +79,7 @@ const ChatUser = () => {
 			message,
 			username: userData?.userName,
 			email: userData?.email,
-			room
+			room: `${filteredUserName?.email}+${userData?.email}`
 		});
 		setText('');
 	};
