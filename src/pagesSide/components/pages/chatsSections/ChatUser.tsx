@@ -54,6 +54,15 @@ const ChatUser = () => {
 		if (socket.current) {
 			socket.current.onmessage = (event: MessageEvent) => {
 				const { messages }: { messages: Message[] } = JSON.parse(event.data);
+				setMessages(messages);
+			};
+		}
+	}, [userEmail]);
+
+	useEffect(() => {
+		if (socket.current) {
+			socket.current.onmessage = (event: MessageEvent) => {
+				const { messages }: { messages: Message[] } = JSON.parse(event.data);
 				if (filteredUserName?.email && userData?.email) {
 					const newRoom = `${filteredUserName.email}+${userData.email}`
 						.split('+')
