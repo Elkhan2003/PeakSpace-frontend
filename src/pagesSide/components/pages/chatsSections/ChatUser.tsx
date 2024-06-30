@@ -51,23 +51,12 @@ const ChatUser = () => {
 	}, [initWebSocket]);
 
 	useEffect(() => {
-		socket.current!.onmessage = (event: MessageEvent) => {
-			const { messages }: { messages: Message[] } = JSON.parse(event.data);
-			if (filteredUserName?.email && userData?.email) {
-				const newRoom = `${filteredUserName.email}+${userData.email}`
-					.split('+')
-					.sort()
-					.join('+');
-				const filteredMessages: Message[] = messages.filter(
-					(item) => item.room === newRoom
-				);
-				if (filteredMessages.length) {
-					setMessages(filteredMessages);
-				} else {
-					setMessages(filteredMessages);
-				}
-			}
-		};
+		if (socket.current) {
+			socket.current.onmessage = (event: MessageEvent) => {
+				const { messages }: { messages: Message[] } = JSON.parse(event.data);
+				setMessages(messages);
+			};
+		}
 		if (isConnected && filteredUserName?.email && userData?.email) {
 			const newRoom = `${filteredUserName.email}+${userData.email}`
 				.split('+')
