@@ -22,6 +22,7 @@ const ChatUser = () => {
 	const socket = useRef<WebSocket | null>(null);
 	const [isConnected, setIsConnected] = useState<boolean>(false);
 	const [messages, setMessages] = useState<Message[]>([]);
+
 	const [text, setText] = useState<string>('');
 	const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +54,18 @@ const ChatUser = () => {
 		if (socket.current) {
 			socket.current.onmessage = (event: MessageEvent) => {
 				const { messages }: { messages: Message[] } = JSON.parse(event.data);
-				setMessages(messages);
+				if (filteredUserName?.email && userData?.email) {
+					const newRoom = `${filteredUserName.email}+${userData.email}`
+						.split('+')
+						.sort()
+						.join('+');
+					const filteredMessages = messages.find(
+						(item) => item.room === newRoom
+					);
+					if (filteredMessages?.room === newRoom) {
+						setMessages(messages);
+					}
+				}
 			};
 		}
 		if (isConnected && filteredUserName?.email && userData?.email) {
@@ -64,6 +76,15 @@ const ChatUser = () => {
 			sendWebSocketMessage({ event: 'getChatMessage', room: newRoom });
 		}
 	}, [isConnected, filteredUserName, userData, userEmail]);
+
+	useEffect(() => {
+		if (socket.current) {
+			socket.current.onmessage = (event: MessageEvent) => {
+				const { messages }: { messages: Message[] } = JSON.parse(event.data);
+				setMessages(messages);
+			};
+		}
+	}, [userEmail]);
 
 	const sendWebSocketMessage = (message: Message) => {
 		if (socket.current?.readyState === WebSocket.OPEN) {
