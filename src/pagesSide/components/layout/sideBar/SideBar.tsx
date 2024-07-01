@@ -37,7 +37,7 @@ const SideBar: FC = () => {
 						))}
 					</ul>
 				</nav>
-			</div>
+			</div>``
 		</>
 	);
 };
